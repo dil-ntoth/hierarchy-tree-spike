@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { MuiTreeView, Home, ReactComplexTree, ReactArborist, ReactVtree, ReactAspen, ReactVirtualizedTree } from './components';
+import { 
+  Home, 
+  MuiTreeView, 
+  MuiTreeViewRich,
+  ReactArborist, 
+  ReactAspen, 
+  ReactComplexTree, 
+  ReactVirtualizedTree, 
+  ReactVtree, 
+} from './components';
 import { Routes, Route } from 'react-router';
 import { Layout } from './Layout';
 
@@ -10,6 +19,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="mui" element={<MuiTreeView />} />
+        <Route path="mui-rich" element={<MuiTreeViewRich />} />
         <Route path="react-complex-tree" element={<ReactComplexTree />} />
         <Route path="react-arborist" element={<ReactArborist />} />
         <Route path="react-vtree" element={<ReactVtree />} />
