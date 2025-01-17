@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { 
+  CustomTreeReactWindow,
+  CustomTreeTanstackVirtual,
   Home, 
   MuiTreeView, 
   MuiTreeViewRich,
@@ -18,6 +20,8 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="custom-tree-react-window" element={<CustomTreeReactWindow />} />
+        <Route path="custom-tree-tanstack-virtual" element={<CustomTreeTanstackVirtual />} />
         <Route path="mui" element={<MuiTreeView />} />
         <Route path="mui-rich" element={<MuiTreeViewRich />} />
         <Route path="react-complex-tree" element={<ReactComplexTree />} />

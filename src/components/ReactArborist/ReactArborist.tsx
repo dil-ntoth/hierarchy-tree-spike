@@ -11,12 +11,10 @@ export function ReactArborist() {
   const items = useSyncExternalStore(nodeStore.subscribe, nodeStore.getSnapshot);
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
-      <div className="parent" ref={ref}>
+    <div style={{ height: "100vh", width: "100vw" }} ref={ref}>
         <Tree initialData={items} height={height} width={width} >
           {Node}
         </Tree>
-      </div>
     </div>
   )
 }
@@ -26,7 +24,7 @@ function Node({ node, style, dragHandle}) {
   
   return (
     <div style={style} ref={dragHandle}>
-      {node.isLeaf ? "*" : '[]'}
+      {/* {node.isLeaf ? "*" : '[]'} */}
       {node.data.label}
     </div>
   )

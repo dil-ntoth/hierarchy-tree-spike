@@ -1,3 +1,8 @@
 export function ReactAspen() {
-  return <span>React aspen</span>
+  return (
+    <>
+      <span>React Aspen</span>
+      <p>Doesn't support React v18</p>
+    </>
+  )
 }

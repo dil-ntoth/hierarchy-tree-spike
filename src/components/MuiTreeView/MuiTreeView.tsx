@@ -1,5 +1,6 @@
 import React from 'react';
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 import { TreeItem2 } from '@mui/x-tree-view/TreeItem2';
 import { TreeViewBaseItem } from '@mui/x-tree-view/models';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
@@ -82,12 +83,12 @@ export function MuiTreeView() {
       }}>
         <SimpleTreeView
           // expandedItems={getAllItemsWithChildrenItemIds(items)}
-          defaultExpandedItems={getAllItemsWithChildrenItemIds(items)}
+          // defaultExpandedItems={getAllItemsWithChildrenItemIds(items)}
         >
           {virtualizer.getVirtualItems().map((virtualRow) => {
             const item = flattenedItems[virtualRow.index];
             return (
-              <TreeItem2
+              <TreeItem
                 key={item.id}
                 id={item.id}
                 itemId={item.id}
@@ -102,7 +103,7 @@ export function MuiTreeView() {
                 }}
               >
                 {item.label}
-              </TreeItem2>
+              </TreeItem>
             );
           })}
         </SimpleTreeView>
