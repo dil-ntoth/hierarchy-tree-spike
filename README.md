@@ -1,4 +1,4 @@
-# Vanguard Tree component poc application
+# Vanguard Tree component POC
 
 ## How to use
 
