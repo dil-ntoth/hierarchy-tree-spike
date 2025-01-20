@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { 
+  AiTree,
   CustomTreeReactWindow,
   CustomTreeTanstackVirtual,
+  Datagrid,
   Home, 
   MuiTreeView, 
   MuiTreeViewRich,
@@ -13,7 +15,6 @@ import {
 } from './components';
 import { Routes, Route } from 'react-router';
 import { Layout } from './Layout';
-import { AiTree } from './components/AiTree';
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="react-aspen" element={<ReactAspen />} />
         <Route path="react-virtualized-tree" element={<ReactVirtualizedTree />} />
         <Route path="ai-tree" element={<AiTree />} />
+        <Route path="datagrid" element={<Datagrid />} />
       </Route>
     </Routes>
   )

@@ -13,6 +13,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@mui/x-data-grid-pro": "^7.24.0",
     "@mui/x-tree-view": "^7.23.2",
     "@tanstack/react-virtual": "^3.11.2",
     "immer": "^10.1.1",
