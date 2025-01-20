@@ -13,6 +13,7 @@ import {
 } from './components';
 import { Routes, Route } from 'react-router';
 import { Layout } from './Layout';
+import { AiTree } from './components/AiTree';
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="react-vtree" element={<ReactVtree />} />
         <Route path="react-aspen" element={<ReactAspen />} />
         <Route path="react-virtualized-tree" element={<ReactVirtualizedTree />} />
+        <Route path="ai-tree" element={<AiTree />} />
       </Route>
     </Routes>
   )

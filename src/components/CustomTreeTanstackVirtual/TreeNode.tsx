@@ -10,5 +10,9 @@ export interface TreeNode {
     isCollapsable?: boolean;
     isLeaf?: boolean;
     isSelected?: boolean;
-    isContextMenu?: boolean;
+    auditableEntityName?: string;
+    type: 'process' | 'orgUnit';
+    coveredByParent: boolean;
+    isMerged: boolean;
+    isDisabled: boolean;
 }

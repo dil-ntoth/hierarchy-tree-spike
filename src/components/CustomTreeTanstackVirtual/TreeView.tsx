@@ -4,17 +4,16 @@ import { TreeNode } from "./TreeNode";
 // import { TreeViewItem } from "./TreeViewItem";
 import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import React from "react";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
+import { TreeItem } from "./TreeItem";
 
 const getItemData = memoizeOne(
   (
     nodes: TreeNode[],
     onSelectedItem: (node: TreeNode) => void,
-    onContextMenu: (node: TreeNode, event: React.MouseEvent) => void
   ) => ({
     nodes,
     onSelectedItem,
-    onContextMenu,
   })
 );
 
@@ -22,8 +21,6 @@ export interface TreeViewProps {
   id?: string;
   nodes: TreeNode[];
   onSelectedItem: (node: TreeNode) => void;
-  onSelectEmptyArea?: () => void;
-  onContextMenu?: (node: TreeNode, event: React.MouseEvent) => void;
   itemSize?: number;
   style?: CSSProperties | undefined;
 }
@@ -32,21 +29,21 @@ export interface TreeViewProps {
 
 
 export function TreeView(props: TreeViewProps) {
-  const { id, onSelectedItem, nodes, onSelectEmptyArea, onContextMenu } = props;
+  const { id, onSelectedItem, nodes } = props;
   const fixedListClass = "TreeView-FixedList";
   const itemData = getItemData(
     nodes,
     onSelectedItem,
-    onContextMenu ?? (() => {})
   );
 
   const listRef = React.useRef<HTMLDivElement | null>(null)
 
   const virtualizer = useWindowVirtualizer({
-    count: 10000,
+    count: nodes.length,
     estimateSize: () => 35,
     overscan: 5,
     scrollMargin: listRef.current?.offsetTop ?? 0,
+    // debug: true,
   })
 
   return (
@@ -59,30 +56,15 @@ export function TreeView(props: TreeViewProps) {
             position: 'relative',
           }}
         >
-          {virtualizer.getVirtualItems().map((item) => {
-            const currentNode = nodes[item.index];
-            const left = currentNode.depth * 16;
-            
-            return (
-            <div
-              style={{
-                left: `${left}px`,
-                position: 'absolute',
-                top: 0,
-                width: '100%',
-                height: `${item.size}px`,
-                transform: `translateY(${
-                  item.start - virtualizer.options.scrollMargin
-                }px)`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'left',
-              }}
-            >
-              <Avatar sx={{ width: 14, height: 14, fontSize: '0.5rem' }}>L3</Avatar>
-              <Typography>{currentNode.label}</Typography>
-            </div>
-          )})}
+          {virtualizer.getVirtualItems().map((item) => 
+            <TreeItem 
+              currentNode={nodes[item.index]} 
+              item={item} 
+              key={item.key} 
+              onSelectedItem={onSelectedItem} 
+              virtualizer={virtualizer} 
+            />
+          )}
         </div>
       </div>
     </>

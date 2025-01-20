@@ -12,6 +12,7 @@ export function Home() {
       <li><Link to='/react-vtree'>React VTree</Link></li>
       <li><Link to='/react-aspen'>React Aspen</Link></li>
       <li><Link to='/react-virtualized-tree'>React virtualized tree</Link></li>
+      <li><Link to='/ai-tree'>AI generated Tree</Link></li>
     </ul>
   )
 }

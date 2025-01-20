@@ -19,7 +19,11 @@ export function CustomTreeTanstackVirtual() {
       id: rootId, 
       label: 'Root', 
       parentId: null,
-      depth: 0
+      depth: 0,
+      type: 'orgUnit',
+      coveredByParent: false,
+      isMerged: false,
+      isDisabled: false,
     });
   
     // Add second level (parents)
@@ -29,7 +33,12 @@ export function CustomTreeTanstackVirtual() {
         id: parentId,
         label: `Parent ${i + 1}`,
         parentId: rootId,
-        depth: 1
+        depth: 1,
+        auditableEntityName: 'AU name',
+        type: 'orgUnit',
+        coveredByParent: false,
+        isMerged: false,
+        isDisabled: false,
       });
   
       // Add third level (children)
@@ -39,7 +48,12 @@ export function CustomTreeTanstackVirtual() {
           label: `Child ${i + 1}-${j + 1}`,
           parentId: parentId,
           isLeaf: true,
-          depth: 2
+          depth: 2,
+          // auditableEntityName: 'AU name',
+          type: 'process',
+          coveredByParent: false,
+          isMerged: false,
+          isDisabled: false,
         });
       }
     }
@@ -47,33 +61,118 @@ export function CustomTreeTanstackVirtual() {
     return nodes;
   }
 
-  const items = generateTreeData(332, 12);
+  // const items = generateTreeData(332, 12);
 
-  // return (
-  //   <Box sx={{
-  //     // height: '100%',
-  //     // display: 'flex',
-  //     // alignItems: 'center',
-  //     // pl: 1,
-  //     // pr: 1,
-  // }}>
-  //     <h1>CustomTree</h1>
-  //     <Box sx={{
-  //               // pt: 1,
-  //               // height: `calc(100% - 8px)`,
-  //               display: 'flex',
-  //               height: '100vh',
-  //           }}>
-  //       <TreeView nodes={items} onSelectedItem={(item) => { console.log(item) }} itemSize={64} />
-  //     </Box>
-  //   </Box>
-  // );
+  const [items, setItems] = React.useState<TreeNode[]>(generateTreeData(332, 12));
 
+
+
+  function findAllDescendants(parentId: string, items: TreeNode[]): TreeNode[] {
+    const descendants: TreeNode[] = [];
+    
+    // Find direct children
+    const children = items.filter(item => item.parentId === parentId);
+    
+    // Add children to descendants
+    descendants.push(...children);
+    
+    // Recursively find descendants of each child
+    children.forEach(child => {
+      const childDescendants = findAllDescendants(child.id, items);
+      descendants.push(...childDescendants);
+    });
+    
+    return descendants;
+  }
+
+  // function insertNewChildNode(parentId: string, items: TreeNode[]): TreeNode[] {
+  //   // Create new node
+  //   const newNodeId = uuidv4();
+  //   const parentNode = items.find(item => item.id === parentId);
+    
+  //   if (!parentNode) return items;
+  
+  //   // Get all current children
+  //   const children = items.filter(item => item.parentId === parentId);
+    
+  //   // Create new intermediate node
+  //   const newNode: TreeNode = {
+  //     id: newNodeId,
+  //     label: 'New Node',
+  //     parentId: parentId,
+  //     isLeaf: false,
+  //     depth: (parentNode.depth || 0) + 1,
+  //     type: 'process',
+  //     coveredByParent: false,
+  //     isMerged: false,
+  //     isDisabled: false,
+  //   };
+  
+  //   // Update parent references of existing children
+  //   const updatedItems = items.map(item => 
+  //     item.parentId === parentId
+  //       ? { ...item, parentId: newNodeId, depth: (item.depth || 0) + 1 }
+  //       : item
+  //   );
+  
+  //   // Add new node to items
+  //   return [...updatedItems, newNode];
+  // }
+  function insertNewChildNode(parentId: string, items: TreeNode[]): TreeNode[] {
+    const parentNode = items.find(item => item.id === parentId);
+    if (!parentNode) return items;
+  
+    const parentIndex = items.findIndex(item => item.id === parentId);
+    const descendants = findAllDescendants(parentId, items);
+    
+    // Create new intermediate node
+    const newNode: TreeNode = {
+      id: uuidv4(),
+      label: 'New Node',
+      parentId: parentId,
+      isLeaf: false,
+      depth: (parentNode.depth || 0) + 1,
+      type: 'process',
+      coveredByParent: false,
+      isMerged: false,
+      isDisabled: false,
+    };
+  
+    // Update descendants' parent reference and depth
+    const updatedDescendants = descendants.map(item => ({
+      ...item,
+      parentId: newNode.id,
+      depth: (item.depth || 0) + 1
+    }));
+  
+    // Create new array with correct order
+    const beforeParent = items.slice(0, parentIndex + 1);
+    const afterDescendants = items.filter(item => 
+      !descendants.find(d => d.id === item.id) && 
+      item.id !== parentId
+    );
+  
+    return [
+      ...beforeParent,
+      newNode,
+      ...updatedDescendants,
+      ...afterDescendants.filter(item => item.id !== newNode.id)
+    ];
+  }
+
+  function onSelectHandler(node: TreeNode) {
+    // console.log(node);
+    // console.log(items.find((item) => item.id === node.id));
+    // const descendants = findAllDescendants(node.id, items);
+    // console.log(descendants);
+    // TODO: Find all descendants of the selected node
+    setItems(prevItems => insertNewChildNode(node.id, prevItems));
+  }
 
   return (
     <>
       <h1>CustomMuiTree</h1>
-      <TreeView nodes={items} onSelectedItem={(item) => { console.log(item) }} itemSize={64} />
+      <TreeView nodes={items} onSelectedItem={onSelectHandler} itemSize={64} />
     </>
   );
 }
