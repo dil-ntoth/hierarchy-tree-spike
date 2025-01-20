@@ -12,6 +12,11 @@ export function ReactArborist() {
 
   return (
     <div style={{ height: "100vh", width: "100vw" }} ref={ref}>
+        <ul>
+          <li>Virtualization: React-window</li>
+          <li>No WindowScroll</li>
+          <li>Maintained, but low activity</li>
+        </ul>
         <Tree initialData={items} height={height} width={width} >
           {Node}
         </Tree>

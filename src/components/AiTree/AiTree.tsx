@@ -1,4 +1,4 @@
-import MUIVirtualTree from "./MuiVirtualTree";
+import MUIVirtualTree from "./VirtualTree";
 import VirtualTree from "./VirtualTree";
 
 // const treeData = [
